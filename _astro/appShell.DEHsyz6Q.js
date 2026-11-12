@@ -1,0 +1,1 @@
+function e(){return document.body}var t=new Map,n=!1;function r(e){return e.pathname+e.search}document.addEventListener(`astro:before-swap`,i=>{let{from:a,navigationType:o}=i;t.set(r(a),e().scrollTop),n=o===`traverse`}),document.addEventListener(`astro:after-swap`,()=>{n&&(n=!1,e().scrollTo({top:t.get(r(new URL(window.location.href)))??0,behavior:`instant`}))});export{e as t};
