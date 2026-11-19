@@ -1,0 +1,745 @@
+<!DOCTYPE html><html dir="ltr" lang="zh"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="icon" href="/favicon.ico"><link rel="canonical" href="https://zer0-yuki.github.io/posts/legacy/haskell%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"><meta name="generator" content="Astro v7.4.5"><!-- Font --><style>@font-face{font-family:"Noto Sans SC-bf95e13eb00277db";src:url("/_astro/fonts/af5c2d9ef107943b.woff2") format("woff2");font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-weight:400;font-style:normal;}@font-face{font-family:"Noto Sans SC-bf95e13eb00277db";src:url("/_astro/fonts/3f8e1b1488232514.woff2") format("woff2");font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-weight:700;font-style:normal;}@font-face{font-family:"Noto Sans SC-bf95e13eb00277db";src:url("/_astro/fonts/19ae469c2fb3092c.woff2") format("woff2");font-display:swap;font-weight:400;font-style:normal;}@font-face{font-family:"Noto Sans SC-bf95e13eb00277db";src:url("/_astro/fonts/7908617b2e6c5a5d.woff2") format("woff2");font-display:swap;font-weight:700;font-style:normal;}@font-face{font-family:"Noto Sans SC-bf95e13eb00277db fallback: Arial";src:local("Arial");font-display:swap;font-weight:400;font-style:normal;size-adjust:104.7553%;ascent-override:110.7342%;descent-override:27.4926%;line-gap-override:0%;}@font-face{font-family:"Noto Sans SC-bf95e13eb00277db fallback: Arial Bold";src:local("Arial Bold");font-display:swap;font-weight:700;font-style:normal;size-adjust:97.2956%;ascent-override:119.2243%;descent-override:29.6005%;line-gap-override:0%;}@font-face{font-family:"Noto Sans SC-bf95e13eb00277db fallback: Arial";src:local("Arial");font-display:swap;font-weight:400;font-style:normal;size-adjust:104.7553%;ascent-override:110.7342%;descent-override:27.4926%;line-gap-override:0%;}@font-face{font-family:"Noto Sans SC-bf95e13eb00277db fallback: Arial Bold";src:local("Arial Bold");font-display:swap;font-weight:700;font-style:normal;size-adjust:97.2956%;ascent-override:119.2243%;descent-override:29.6005%;line-gap-override:0%;}:root{--font-noto-sans-sc:"Noto Sans SC-bf95e13eb00277db","Noto Sans SC-bf95e13eb00277db fallback: Arial","Noto Sans SC-bf95e13eb00277db fallback: Arial Bold",sans-serif;}</style><link rel="preload" href="/_astro/fonts/af5c2d9ef107943b.woff2" as="font" type="font/woff2" crossorigin><!-- Primary meta --><title>Haskell安装配置 | Pur314nD</title><meta name="title" content="Haskell安装配置 | Pur314nD"><meta name="description" content><meta name="author" content="zer0-yuki"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:site_name" content="Pur314nD"><meta property="og:title" content="Haskell安装配置 | Pur314nD"><meta property="og:description" content><meta property="og:url" content="https://zer0-yuki.github.io/posts/legacy/haskell%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"><meta property="og:image" content="https://zer0-yuki.github.io/og.png"><!-- Twitter / X --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://zer0-yuki.github.io/posts/legacy/haskell%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"><meta property="twitter:title" content="Haskell安装配置 | Pur314nD"><meta property="twitter:description" content><meta property="twitter:image" content="https://zer0-yuki.github.io/og.png"><!-- RSS autodiscovery --><link rel="alternate" type="application/rss+xml" title="Pur314nD" href="https://zer0-yuki.github.io/rss.xml"><!-- Filled at runtime by theme.ts to match the current background colour --><meta name="theme-color" content=""><!-- Extra head content injected by child layouts (e.g. JSON-LD, article meta) --><meta property="og:type" content="article"><meta property="article:published_time" content="2024-10-06T14:51:00.000Z"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Haskell安装配置 | Pur314nD","datePublished":"2024-10-06T14:51:00.000Z","author":[{"@type":"Person","name":"zer0-yuki"}]}</script><!--
+      Inline FOUC-prevention script: sets data-theme on <html> before
+      the browser paints. Runs synchronously, no defer/async.
+    --><script>
+      (function () {
+        const stored = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+        const theme = stored ?? (prefersDark ? "dark" : "light");
+        const root = document.firstElementChild;
+        root?.setAttribute("data-theme", theme);
+        root?.classList.toggle("dark", theme === "dark");
+        // Expose value so theme.ts can skip re-detection.
+        window.__theme = { value: theme };
+
+        // Restore the custom accent hue before paint so tokens resolve once.
+        const hue = localStorage.getItem("hue");
+        if (hue && Number.isFinite(Number(hue))) {
+          root?.style.setProperty("--h", hue);
+        }
+      })();
+    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.DXqcZz58.js"></script><link rel="stylesheet" href="/_astro/Header.CBjKNf-i.css"><link rel="stylesheet" href="/_astro/index.BzFltsF9.css"><style>[data-astro-transition-scope="astro-bztu2lml-1"] { view-transition-name: haskell; }@layer astro { ::view-transition-old(haskell) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(haskell) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(haskell) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(haskell) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-2"] { view-transition-name: vscode; }@layer astro { ::view-transition-old(vscode) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(vscode) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(vscode) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(vscode) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-3"] { view-transition-name: computer; }@layer astro { ::view-transition-old(computer) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(computer) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(computer) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(computer) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body class="bg-background font-app text-foreground selection:bg-accent/75 selection:text-accent-foreground flex flex-col"><div data-astro-transition-persist="bg" class="pointer-events-none fixed inset-0 -z-10"><img src="/_astro/background1.BTD4ArOQ_Z12f1MU.webp" alt aria-hidden="true" loading="lazy" decoding="async" width="3840" height="2239" class="h-full w-full mask-b-from-0% mask-b-to-90% object-cover object-[70%_50%] opacity-50 dark:brightness-[.7]"></div><canvas id="ambient-particles" class="pointer-events-none fixed inset-0 z-0" aria-hidden="true"></canvas><a id="skip-to-content" href="#main-content" class="bg-background text-accent absolute inset-s-16 -top-full z-50 px-3 py-2 backdrop-blur-lg transition-all focus:top-4" data-astro-cid-nen7h5rs>跳到内容</a><header id="site-header" class="border-border bg-background/70 sticky top-0 z-40 border-b-2 backdrop-blur-xs backdrop-saturate-150" data-astro-cid-nen7h5rs><div class="app-layout flex flex-col items-center justify-between sm:flex-row" data-astro-cid-nen7h5rs><div class="relative flex w-full items-baseline justify-between py-4 sm:items-center sm:py-6" data-astro-cid-nen7h5rs><a href="/" class="absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none" data-astro-cid-nen7h5rs>Pur314nD</a><nav id="nav-menu" class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0" data-astro-cid-nen7h5rs><button id="menu-btn" class="focus-outline self-end p-2 sm:hidden" aria-label="打开菜单" aria-expanded="false" aria-controls="menu-items" data-label-open="打开菜单" data-label-close="关闭菜单" data-astro-cid-nen7h5rs><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="hidden" viewBox="0 0 24 24" id="close-icon" data-astro-cid-nen7h5rs="true"><path stroke="none" d="M0 0h24v24H0z" /><path d="M18 6 6 18M6 6l12 12" /></svg><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="icon icon-tabler icons-tabler-outline icon-tabler-menu-deep" viewBox="0 0 24 24" id="menu-icon" data-astro-cid-nen7h5rs="true"><path stroke="none" d="M0 0h24v24H0z" /><path d="M4 6h16M7 12h13M10 18h10" /></svg></button><ul id="menu-items" class="[&amp;&gt;li&gt;a]:hover:text-accent mt-4 hidden w-44 grid-cols-3 place-content-center gap-2 sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0 sm:[&amp;&gt;li]:h-8 [&amp;&gt;li&gt;a]:block [&amp;&gt;li&gt;a]:px-4 [&amp;&gt;li&gt;a]:py-3 [&amp;&gt;li&gt;a]:text-center [&amp;&gt;li&gt;a]:font-medium sm:[&amp;&gt;li&gt;a]:px-2 sm:[&amp;&gt;li&gt;a]:py-1" data-astro-cid-nen7h5rs><li class="col-span-3" data-astro-cid-nen7h5rs><a href="/posts/" class="active-nav" data-astro-cid-nen7h5rs>文章</a></li><li class="col-span-3" data-astro-cid-nen7h5rs><a href="/tags/" data-astro-cid-nen7h5rs>标签</a></li><li class="col-span-3" data-astro-cid-nen7h5rs><a href="/about/" data-astro-cid-nen7h5rs>关于</a></li><li class="col-span-3" data-astro-cid-nen7h5rs><a href="/archives/" title="归档" aria-label="归档" data-astro-cid-nen7h5rs="true" class="group inline-flex items-center gap-1 hover:text-accent focus-outline flex size-full justify-center p-3 sm:relative sm:size-8 sm:p-0"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="hidden sm:absolute sm:top-1/2 sm:left-1/2 sm:block sm:size-6 sm:-translate-x-1/2 sm:-translate-y-1/2" viewBox="0 0 24 24" data-astro-cid-nen7h5rs="true"><path stroke="none" d="M0 0h24v24H0z" /><path d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 2 2 0 0 1-2 2H5a2 2 0 0 1-2-2M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8M10 12h4" /></svg><span class="sm:sr-only" data-astro-cid-nen7h5rs>归档</span></a></li><li class="col-span-1 flex items-center justify-center" data-astro-cid-nen7h5rs><a href="/search/" title="搜索" aria-label="搜索" data-astro-cid-nen7h5rs="true" class="group inline-flex items-center gap-1 hover:text-accent focus-outline relative size-8"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="absolute top-1/2 left-1/2 size-6 -translate-x-1/2 -translate-y-1/2" viewBox="0 0 24 24" data-astro-cid-nen7h5rs="true"><path stroke="none" d="M0 0h24v24H0z" /><path d="M3 10a7 7 0 1 0 14 0 7 7 0 1 0-14 0M21 21l-6-6" /></svg><span class="sr-only" data-astro-cid-nen7h5rs>搜索</span></a></li><li class="col-span-1 flex items-center justify-center" data-astro-cid-nen7h5rs><button id="theme-btn" class="focus-outline hover:[&amp;&gt;svg]:stroke-accent relative size-12 p-4 sm:size-8" title="切换主题" aria-label="auto" aria-live="polite" data-astro-cid-nen7h5rs><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="absolute top-[50%] left-[50%] translate-[-50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" viewBox="0 0 24 24" data-astro-cid-nen7h5rs="true"><path stroke="none" d="M0 0h24v24H0z" /><path d="M12 3h.393a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 2.992z" /></svg><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="absolute top-[50%] left-[50%] translate-[-50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" viewBox="0 0 24 24" data-astro-cid-nen7h5rs="true"><path stroke="none" d="M0 0h24v24H0z" /><path d="M14.828 14.828a4 4 0 1 0-5.656-5.656 4 4 0 0 0 5.656 5.656M6.343 17.657l-1.414 1.414M6.343 6.343 4.929 4.929M17.657 6.343l1.414-1.414M17.657 17.657l1.414 1.414M4 12H2M12 4V2M20 12h2M12 20v2" /></svg></button></li><li class="relative col-span-1 flex items-center justify-center" data-astro-cid-cyxw5c7e><button id="hue-btn" type="button" popovertarget="hue-popover" class="hover:[&amp;&gt;svg]:stroke-accent relative size-12 p-4 sm:size-8" title="主题色相" aria-label="主题色相" data-astro-cid-cyxw5c7e><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="absolute top-1/2 left-1/2 size-6 translate-[-50%]" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-cyxw5c7e="true"><path stroke="none" d="M0 0h24v24H0z" /><path d="M12 21a9 9 0 0 1 0-18c4.97 0 9 3.582 9 8 0 1.06-.474 2.078-1.318 2.828S17.693 15 16.5 15H14a2 2 0 0 0-1 3.75A1.3 1.3 0 0 1 12 21" /><path d="M7.5 10.5a1 1 0 1 0 2 0 1 1 0 1 0-2 0M11.5 7.5a1 1 0 1 0 2 0 1 1 0 1 0-2 0M15.5 10.5a1 1 0 1 0 2 0 1 1 0 1 0-2 0" /></svg></button><div id="hue-popover" popover="auto" role="group" aria-label="主题色相" class="hue-popover" data-astro-cid-cyxw5c7e><label class="hue-slider-wrap" data-astro-cid-cyxw5c7e><span class="sr-only" data-astro-cid-cyxw5c7e>色相角度</span><input id="hue-range" type="range" min="0" max="360" step="1" value="12" class="hue-slider" data-astro-cid-cyxw5c7e><output id="hue-value" for="hue-range" data-astro-cid-cyxw5c7e>12°</output></label><div class="hue-presets" role="group" aria-label="预设色相" data-astro-cid-cyxw5c7e><button type="button" class="hue-preset" data-hue="12" style="--h:12" aria-label="12°" data-astro-cid-cyxw5c7e></button><button type="button" class="hue-preset" data-hue="45" style="--h:45" aria-label="45°" data-astro-cid-cyxw5c7e></button><button type="button" class="hue-preset" data-hue="88" style="--h:88" aria-label="88°" data-astro-cid-cyxw5c7e></button><button type="button" class="hue-preset" data-hue="145" style="--h:145" aria-label="145°" data-astro-cid-cyxw5c7e></button><button type="button" class="hue-preset" data-hue="195" style="--h:195" aria-label="195°" data-astro-cid-cyxw5c7e></button><button type="button" class="hue-preset" data-hue="250" style="--h:250" aria-label="250°" data-astro-cid-cyxw5c7e></button><button type="button" class="hue-preset" data-hue="300" style="--h:300" aria-label="300°" data-astro-cid-cyxw5c7e></button><button type="button" class="hue-preset" data-hue="340" style="--h:340" aria-label="340°" data-astro-cid-cyxw5c7e></button></div><button id="hue-reset" type="button" class="hue-reset" data-astro-cid-cyxw5c7e>恢复默认</button></div></li><script type="module">function e(){let e=document.documentElement.style.getPropertyValue(`--h`),t=Number.parseFloat(e);return Number.isFinite(t)?t:12}function t(){let t=Math.round(e()),n=document.querySelector(`#hue-range`),r=document.querySelector(`#hue-value`);n&&(n.value=String(t)),r&&(r.textContent=`${t}°`);for(let e of document.querySelectorAll(`[data-hue]`))e.toggleAttribute(`data-active`,Number(e.dataset.hue)===t)}function n(e){let t=document.querySelector(`#hue-value`);t&&(t.textContent=`${e}°`);for(let t of document.querySelectorAll(`[data-hue]`))t.toggleAttribute(`data-active`,Number(t.dataset.hue)===e)}function r(){let e=document.querySelector(`meta[name='theme-color']`);e&&(e.content=getComputedStyle(document.body).backgroundColor)}function i(e){let n=document.documentElement;e===null?(n.style.removeProperty(`--h`),localStorage.removeItem(`hue`)):(n.style.setProperty(`--h`,String(e)),localStorage.setItem(`hue`,String(e))),t(),r()}function a(){let e=document.querySelector(`#hue-btn`),t=document.querySelector(`#hue-popover`);if(!e||!t)return;let n=t.offsetWidth;if(!n)return;let r=e.getBoundingClientRect(),i=Math.min(Math.max(8,r.right-n),window.innerWidth-n-8);t.style.left=`${i}px`,t.style.top=`${r.bottom+8}px`}function o(){let e=document.querySelector(`#hue-range`);e?.addEventListener(`input`,()=>n(Number(e.value))),e?.addEventListener(`change`,()=>i(Number(e.value))),document.querySelector(`#hue-reset`)?.addEventListener(`click`,()=>i(null));for(let e of document.querySelectorAll(`[data-hue]`))e.addEventListener(`click`,()=>i(Number(e.dataset.hue)));document.querySelector(`#hue-popover`)?.addEventListener(`toggle`,e=>{e.newState===`open`&&a()}),t()}window.addEventListener(`resize`,()=>{document.querySelector(`#hue-popover`)?.matches(`:popover-open`)&&a()}),o(),document.addEventListener(`astro:after-swap`,o),document.addEventListener(`astro:before-swap`,e=>{let t=localStorage.getItem(`hue`);t!==null&&e.newDocument?.documentElement.style.setProperty(`--h`,t)});</script></ul></nav></div></div></header><script type="module">function e(){let e=document.querySelector(`#menu-btn`),t=document.querySelector(`#menu-items`),n=document.querySelector(`#menu-icon`),r=document.querySelector(`#close-icon`);if(!e||!t||!n||!r)return;let i=e.dataset.labelOpen??`Open menu`,a=e.dataset.labelClose??`Close menu`;e.addEventListener(`click`,()=>{let o=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,o?`false`:`true`),e.setAttribute(`aria-label`,o?i:a),t.classList.toggle(`hidden`),t.classList.toggle(`grid`),n.classList.toggle(`hidden`),r.classList.toggle(`hidden`)})}function t(){let e=document.getElementById(`skip-to-content`);e&&e.addEventListener(`click`,e=>{if(e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.button!==0)return;e.preventDefault();let t=document.getElementById(`main-content`);t&&(t.setAttribute(`tabindex`,`-1`),t.addEventListener(`blur`,()=>t.removeAttribute(`tabindex`),{once:!0}),t.focus(),t.scrollIntoView({behavior:`smooth`}))})}e(),document.addEventListener(`astro:after-swap`,e),t(),document.addEventListener(`astro:after-swap`,t);</script><div class="app-layout flex items-center justify-start"><a id="back-button" href="/" class="group inline-flex items-center gap-1 hover:text-accent focus-outline hover:text-foreground/75 -ms-2 mt-8 mb-2"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block size-6 rtl:rotate-180" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="m15 6-6 6 6 6" /></svg><span>返回</span></a></div><script type="module">function e(){let e=document.querySelector(`#back-button`),t=sessionStorage.getItem(`backUrl`);t&&e&&(e.href=t)}document.addEventListener(`astro:page-load`,e),e();</script><main id="main-content" class="app-layout" data-pagefind-body><h1 style="view-transition-name:legacy-obsidian-haskellu005b89u0088c5u00914du007f6e" class="text-accent inline-block text-2xl font-bold sm:text-3xl">Haskell安装配置</h1><div class="my-2 flex items-center gap-2"><div class="text-muted-foreground flex items-center gap-x-2"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block size-6 min-w-5.5" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM16 3v4M8 3v4M4 11h16M7 14h.013M10.01 14h.005M13.01 14h.005M16.015 14h.005M13.015 17h.005M7.01 17h.005M10.01 17h.005" /></svg><time class="text-sm sm:text-base" datetime="2024-10-06T14:51:00.000Z">6 Oct, 2024</time></div><span aria-hidden="true" class="text-muted-foreground max-sm:hidden hidden">|</span></div><div class="post-body mt-8"><aside class="toc-side" data-pagefind-ignore><a href="#article" class="toc-skip">跳到目录</a><nav aria-labelledby="toc-side-label" data-toc-nav><h2 id="toc-side-label" class="toc-label">目录</h2><ol><li><a href="#安装ghcup">安装GHCup</a></li><li><a href="#ghc相关工具的使用">ghc相关工具的使用</a></li></ol><button type="button" class="toc-back-to-top" data-back-to-top><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="size-4" viewBox="0 0 24 24" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" /><path d="M12 5v14M16 9l-4-4M8 9l4-4" /></svg>回到顶部</button></nav></aside><script type="module" src="/_astro/PostToc.astro_astro_type_script_index_0_lang.Do8judht.js"></script><article id="article" class="w-full app-prose max-w-app prose-pre:bg-code"><h2 id="安装ghcup">安装GHCup</h2>
+<p>鉴于网络问题，可以直接使用国内镜像，比如中科大源或者清华源。这里采用中科大源，按照教程<a href="https://mirrors.ustc.edu.cn/help/ghcup.html#:~:text=%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95.">GHCup - USTC Mirror Help</a>。</p>
+<p>在Windows Powershell中输入如下命令：</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="shell"><code><span class="line"><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">$env</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB">:BOOTSTRAP_HASKELL_YAML = </span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD">'</span><span style="--shiki-light:#22863A;--shiki-dark:#ECC48D">https://mirrors.ustc.edu.cn/ghcup/ghcup-metadata/ghcup-0.0.8.yaml</span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD">'</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB"> Set-ExecutionPolicy Bypass -Scope Process -Force;[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;</span><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">Invoke-Command</span><span style="--shiki-light:#2B5581;--shiki-dark:#82AAFF"> -ScriptBlock</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB"> ([ScriptBlock]::Create((</span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">Invoke</span><span style="--shiki-light:#D32F2F;--shiki-dark:#C792EA">-</span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">WebRequest</span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478"> https</span><span style="--shiki-light:#D32F2F;--shiki-dark:#C792EA">://</span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">mirrors</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB">.</span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">ustc</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB">.</span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">edu</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB">.</span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">cn</span><span style="--shiki-light:#D32F2F;--shiki-dark:#C792EA">/</span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">ghcup</span><span style="--shiki-light:#D32F2F;--shiki-dark:#C792EA">/</span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">sh</span><span style="--shiki-light:#D32F2F;--shiki-dark:#C792EA">/</span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">bootstrap</span><span style="--shiki-light:#D32F2F;--shiki-dark:#C792EA">-</span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">haskell</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB">.</span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">ps1</span><span style="--shiki-light:#D32F2F;--shiki-dark:#C792EA"> -</span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">UseBasicParsing</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB">))) -ArgumentList </span><span style="--shiki-light:#24292EFF;--shiki-dark:#C5E478">$true</span></span></code></pre>
+<p>之后耐心等待即可。</p>
+<p>然后再VS Code扩展中搜索Haskell，下载第一个。如果你的代码悬浮提示和库没有正常显示，别担心，有可能是没有设置默认的链接，在下一节会进行操作。</p>
+<h2 id="ghc相关工具的使用">ghc相关工具的使用</h2>
+<p>使用 <code>ghcup</code> 命令行工具可以方便地管理Haskell的各项工具。</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="shell"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">ghcup</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> list</span></span></code></pre>
+<p>使用它来列出已经安装以及可以安装但是未安装的各版本的工具。</p>
+<p>但更经常使用的是带有UI的管理界面。使用命令</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="shell"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">ghcup</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> tui</span></span></code></pre>
+<p>进入如下图的界面，就能够管理所有版本。</p>
+<p>左侧表示安装状态，带有<code>I</code>字样的是已安装的版本，还带有<code>S</code>字样的表示该版本用作默认的工具版本，在蓝色光标的对应版本的位置按<code>S</code>键可以把该版本设置为默认版本。如果刚刚在VS Code中一直没有悬停提示，并且每次打开<code>hs</code>文件都会有错误弹窗弹出，一定记得要设置默认版本。（设置默认版本会创建符号链接，比如把<code>stack.exe</code>链接到<code>stack-3.1.1.exe</code>；而刚好VS Code的这个扩展默认访问<code>PATH</code>下对应的<code>stack.exe</code>，如果没有这个文件就会报错。笔者由于配置时并不清楚，搞了非常久）</p>
+<p><img alt="截图 1" loading="lazy" decoding="async" width="2829" height="1427" src="/_astro/Pasted%20image%2020241006225504.BomJm38l_Z1xUwgM.webp"></p>
+<p>Stack和cabal都是Haskell包管理工具，cabal是官方的工具，功能强大；Stack则操作更简单，使用哪个各取所需。在这里以cabal为例构建项目并运行。</p>
+<p>首先在项目目录下执行</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="shell"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">cabal</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> init</span></span></code></pre>
+<p>或者，如果你想创建一个新的文件夹作为项目，可以</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="shell"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">cabal</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> init</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> your-project-name</span></span></code></pre>
+<p>然后就会弹出项目属性进行选择。</p>
+<p><img alt="截图 2" loading="lazy" decoding="async" width="972" height="1065" src="/_astro/Pasted%20image%2020241007000231.B-qyVaT__19Par.webp"></p>
+<p>可以无脑回车跳过，到时候也可以在<code>Haskell.cabal</code>中重新修改。</p>
+<p>如果构建成功，会形成如下的目录结构：</p>
+<p><img alt="截图 3" loading="lazy" decoding="async" width="531" height="807" src="/_astro/Pasted%20image%2020241007000318.tFT8CT32_26xgUw.webp"></p>
+<p><code>Haskell.exe</code>可能会不存在，这张截图是在项目构建完成后截的。</p>
+<p>构建项目（编译）：</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="shell"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">cabal</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> build</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">cabal</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> run</span></span></code></pre>
+<p>正常会输出如下结果：</p>
+<p><img alt="截图 4" loading="lazy" decoding="async" width="981" height="617" src="/_astro/Pasted%20image%2020241007000656.ByCsTUUV_Z247RSp.webp"></p>
+<p>或者也可以一步到位，直接使用<code>，也会先检查</code>是否有改变，进而重新编译并运行。</p>
+<p>但是，大多数情况你会遇到错误，提示需要到<code>www.hackage.haskell.org</code>进行更新，即执行</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="shell"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">cabal</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> update</span></span></code></pre>
+<p>命令。但是由于众所周知的原因，往往不能直接访问，导致更新一直卡住。这时候需要去把官方的<code>hackage</code>库的地址更改。国内可用的有utsc源和tsinghua源，这里使用中科大的镜像进行配置。也可以直接到<a href="https://mirrors.ustc.edu.cn/help/hackage.html#__tabbed_1_1">Hackage - USTC Mirror Help</a>直接查看帮助。</p>
+<p>在Windows系统下导航到<code>cabal\</code>，打开下面的<code>config</code>文件，然后修改</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="yaml"><code><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#ECC48D">repository hackage.haskell.org</span></span>
+<span class="line"><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA"> url</span><span style="--shiki-light:#D32F2F;--shiki-dark:#D6DEEB">:</span><span style="--shiki-light:#22863A;--shiki-dark:#ECC48D"> http://hackage.haskell.org/</span></span>
+<span class="line"><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA"> -- secure</span><span style="--shiki-light:#D32F2F;--shiki-dark:#D6DEEB">:</span><span style="--shiki-light:#1976D2;--shiki-dark:#FF5874"> True</span></span>
+<span class="line"><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA"> -- root-keys</span><span style="--shiki-light:#D32F2F;--shiki-dark:#D6DEEB">:</span></span>
+<span class="line"><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA"> -- keys-threshold</span><span style="--shiki-light:#D32F2F;--shiki-dark:#D6DEEB">:</span><span style="--shiki-light:#1976D2;--shiki-dark:#F78C6C"> 3</span></span></code></pre>
+<p>修改为</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="yaml"><code><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#ECC48D">repository mirrors.ustc.edu.cn</span></span>
+<span class="line"><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA">  url</span><span style="--shiki-light:#D32F2F;--shiki-dark:#D6DEEB">:</span><span style="--shiki-light:#22863A;--shiki-dark:#ECC48D"> https://mirrors.ustc.edu.cn/hackage/</span></span>
+<span class="line"><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA">  secure</span><span style="--shiki-light:#D32F2F;--shiki-dark:#D6DEEB">:</span><span style="--shiki-light:#1976D2;--shiki-dark:#FF5874"> True</span></span></code></pre>
+<p>保存后重新执行<code>cabal update</code>，就能够看到正常更新了。这两个国内的源也有Stackage的镜像，如果使用Stack进行包管理，同样也可以进行类似的操作，修改Stack的<code>config.yaml</code>来修改。</p>
+<p>如果之后想恢复该文件，可以直接把文件删除，然后重新执行<code>cabal update</code>，这样会先自动生成一份默认的<code>config</code>。</p>
+<p>测试代码（默认生成的代码）：</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="haskell"><code><span class="line"><span style="--shiki-light:#D32F2F;--shiki-dark:#C792EA">module</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB"> Main </span><span style="--shiki-light:#D32F2F;--shiki-dark:#C792EA">where</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">main</span><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA"> ::</span><span style="--shiki-light:#D32F2F;--shiki-dark:#C792EA"> IO</span><span style="--shiki-light:#1976D2;--shiki-dark:#7FDBCA"> ()</span></span>
+<span class="line"><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB">main </span><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA">=</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB"> putStrLn </span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD">"</span><span style="--shiki-light:#22863A;--shiki-dark:#ECC48D">Hello, World!</span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD">"</span></span></code></pre></article></div><hr class="my-8 border-dashed"><div id="post-fab" class="post-fab" data-pagefind-ignore><button type="button" class="post-fab-btn" aria-label="目录" popovertarget="toc-popover" data-has-toc><span class="post-fab-progress" aria-hidden="true"></span><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="post-fab-icon-toc size-6" viewBox="0 0 24 24" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" /><path d="M9 6h11M12 12h8M15 18h5M5 6v.01M8 12v.01M11 18v.01" /></svg><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="post-fab-icon-close size-6" viewBox="0 0 24 24" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" /><path d="M18 6 6 18M6 6l12 12" /></svg><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="post-fab-icon-top size-6" viewBox="0 0 24 24" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" /><path d="M12 5v14M16 9l-4-4M8 9l4-4" /></svg></button></div><div id="toc-popover" class="toc-popover" popover data-pagefind-ignore><nav aria-labelledby="toc-popover-label" data-toc-nav><h2 id="toc-popover-label" class="toc-label">目录</h2><ol><li><a href="#安装ghcup">安装GHCup</a></li><li><a href="#ghc相关工具的使用">ghc相关工具的使用</a></li></ol><button type="button" class="toc-back-to-top" data-back-to-top><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="size-4" viewBox="0 0 24 24" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" /><path d="M12 5v14M16 9l-4-4M8 9l4-4" /></svg>回到顶部</button></nav></div><script type="module" src="/_astro/BackToTopButton.astro_astro_type_script_index_0_lang.Bg4KCn3x.js"></script><div class="sm:my-8 sm:flex sm:items-start sm:justify-between sm:gap-8"><div class="mt-4 mb-8 flex items-start justify-between gap-4 sm:my-0"><ul class="flex flex-wrap gap-4"><li><a data-astro-transition-scope="astro-bztu2lml-1" href="/tags/haskell/" class="flex items-center gap-0.5 border-foreground border-b-2 border-dashed hover:border-accent hover:text-accent hover:-mt-0.5 focus-visible:text-accent focus-visible:border-none text-sm"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="opacity-80 size-4" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M5 9h14M5 15h14M11 4 7 20M17 4l-4 16" /></svg>Haskell</a></li><li><a data-astro-transition-scope="astro-bztu2lml-2" href="/tags/vscode/" class="flex items-center gap-0.5 border-foreground border-b-2 border-dashed hover:border-accent hover:text-accent hover:-mt-0.5 focus-visible:text-accent focus-visible:border-none text-sm"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="opacity-80 size-4" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M5 9h14M5 15h14M11 4 7 20M17 4l-4 16" /></svg>VSCode</a></li><li><a data-astro-transition-scope="astro-bztu2lml-3" href="/tags/computer/" class="flex items-center gap-0.5 border-foreground border-b-2 border-dashed hover:border-accent hover:text-accent hover:-mt-0.5 focus-visible:text-accent focus-visible:border-none text-sm"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="opacity-80 size-4" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M5 9h14M5 15h14M11 4 7 20M17 4l-4 16" /></svg>Computer</a></li></ul></div></div><hr class="my-8 border-dashed"><div data-pagefind-ignore class="my-8 grid grid-cols-1 gap-6 sm:grid-cols-2"><a href="/posts/legacy/微分方程解的存在唯一性定理/" class="flex w-full gap-1 hover:opacity-75"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block flex-none rtl:rotate-180" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M5 12h14M5 12l6 6M5 12l6-6" /></svg><div><span>上一篇</span><div class="text-accent/85 text-sm">微分方程解的存在唯一性定理</div></div></a><a href="/posts/legacy/二元函数的极值/" class="flex w-full justify-end gap-1 text-end hover:opacity-75 sm:col-start-2"><div><span>下一篇</span><div class="text-accent/85 text-sm">二元函数的极值</div></div><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block flex-none rtl:rotate-180" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M5 12h14M13 18l6-6M13 6l6 6" /></svg></a></div><!--
+  giscus mounts into the first `.giscus` element, so the container decides
+  where the comment box appears. The script is injected from `page-load`
+  instead of being declared here: `ClientRouter` marks every script whose
+  `src` already executed (`deselectScripts` in the router), so a declarative
+  tag only ever mounts the first article of a session and leaves the next
+  `.giscus` empty until a full reload.
+--><section class="mt-16 pb-16"><!--
+    Static fallback, rendered inside the giscus container: `client.js` clears
+    the container's children before inserting its iframe, so this disappears
+    by itself once the widget arrives — and simply stays when the network
+    cannot reach giscus.app. No timers, no extra JS to tear it down.
+  --><div class="giscus"><p class="text-muted-foreground border-border rounded-xl border border-dashed px-4 py-10 text-center text-sm">评论加载中…<span class="mt-1 block text-xs opacity-75">若长时间无响应，可能是网络无法访问 giscus.app</span></p></div><script>
+    (() => {
+      // The router dedupes inline scripts by their text content, so this body
+      // runs exactly once per document — no re-entrancy guard needed.
+      const GISCUS_ORIGIN = "https://giscus.app";
+
+      /** @returns {"light" | "dark"} */
+      function currentTheme() {
+        return document.documentElement.dataset.theme === "dark"
+          ? "dark"
+          : "light";
+      }
+
+      // `setConfig` only reaches an iframe that is already mounted; mid
+      // navigation there is nothing to talk to yet, and the next mount seeds
+      // the theme from `data-theme` instead.
+      function pushTheme() {
+        const frame = document.querySelector("iframe.giscus-frame");
+        if (!(frame instanceof HTMLIFrameElement)) return;
+        frame.contentWindow?.postMessage(
+          { giscus: { setConfig: { theme: currentTheme() } } },
+          GISCUS_ORIGIN
+        );
+      }
+
+      function mount() {
+        const container = document.querySelector(".giscus");
+        if (!container) return;
+
+        const script = document.createElement("script");
+        script.src = `${GISCUS_ORIGIN}/client.js`;
+        script.async = true;
+        script.crossOrigin = "anonymous";
+
+        // `preferred_color_scheme` follows the OS rather than this site's own
+        // toggle, so seed the widget with the theme already on <html>.
+        script.setAttribute("data-theme", currentTheme());
+        Object.entries({
+          repo: "zer0-yuki/giscus",
+          "repo-id": "R_kgDOVmYUNQ",
+          category: "Announcements",
+          "category-id": "DIC_kwDOVmYUNc4DKmsM",
+          mapping: "pathname",
+          strict: "0",
+          "reactions-enabled": "1",
+          "emit-metadata": "0",
+          "input-position": "bottom",
+          lang: "zh-CN",
+        }).forEach(([name, value]) => {
+          script.setAttribute(`data-${name}`, value);
+        });
+
+        // Append instead of `replaceChildren()`: `client.js` clears the
+        // container itself right before inserting its iframe, so the static
+        // placeholder stays visible while the widget is still loading.
+        container.append(script);
+
+        // The iframe is created asynchronously. Re-apply the theme on its
+        // first `load` so a toggle that happened while it was fetching does
+        // not leave it stuck on the seed value.
+        const observer = new MutationObserver(() => {
+          const frame = container.querySelector("iframe.giscus-frame");
+          if (!(frame instanceof HTMLIFrameElement)) return;
+          observer.disconnect();
+          frame.addEventListener("load", pushTheme, { once: true });
+        });
+        observer.observe(container, { childList: true });
+      }
+
+      // Written by the inline FOUC script and by theme.ts on every toggle.
+      // <html> itself survives navigation (only its attributes are swapped),
+      // so one observer covers the whole session.
+      new MutationObserver(pushTheme).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-theme"],
+      });
+
+      // Not `after-swap`: theme.ts restores `data-theme` on that event, and
+      // this inline script registers its listener first, so mounting there
+      // would read the theme of the previous page.
+      document.addEventListener("astro:page-load", mount);
+    })();
+  </script></section></main><footer class="app-layout mt-auto"><div class="border-border flex flex-col items-center justify-between border-t py-6 sm:flex-row-reverse sm:py-4"><div class="flex flex-wrap items-center gap-1"><a href="https://github.com/zer0-yuki" title="Pur314nD on Github" class="group inline-flex items-center gap-1 hover:text-accent p-2 hover:rotate-6 sm:p-1"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21" /></svg><span class="sr-only">Pur314nD on Github</span></a></div><div class="my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"><span>版权所有 &#169; 2026</span><span class="hidden sm:inline">&nbsp;|&nbsp;</span><span>保留所有权利。</span></div></div></footer><script type="module" src="/_astro/Layout.astro_astro_type_script_index_0_lang.DjjgIqGE.js"></script><script type="module">var e=`theme`,t=`light`,n=`dark`;function r(){return localStorage.getItem(e)||(window.matchMedia(`(prefers-color-scheme: dark)`).matches?n:t)}var i=window.__theme?.value??r();function a(){localStorage.setItem(e,i),o()}function o(){let e=document.firstElementChild;e?.setAttribute(`data-theme`,i),e?.classList.toggle(`dark`,i===n),document.querySelector(`#theme-btn`)?.setAttribute(`aria-label`,i);let t=window.getComputedStyle(document.body).backgroundColor;document.querySelector(`meta[name='theme-color']`)?.setAttribute(`content`,t)}function s(){o(),document.querySelector(`#theme-btn`)?.addEventListener(`click`,()=>{i=i===t?n:t,a()})}s(),document.addEventListener(`astro:after-swap`,s),document.addEventListener(`astro:before-swap`,e=>{let t=document.querySelector(`meta[name='theme-color']`)?.getAttribute(`content`);t&&e.newDocument.querySelector(`meta[name='theme-color']`)?.setAttribute(`content`,t)}),window.matchMedia(`(prefers-color-scheme: dark)`).addEventListener(`change`,({matches:e})=>{i=e?n:t,a()});</script><script type="module" src="/_astro/Layout.astro_astro_type_script_index_2_lang.D6Isn2O9.js"></script><script type="module" src="/_astro/Layout.astro_astro_type_script_index_3_lang.CTjxx4to.js"></script></body></html><script data-astro-rerun>
+  function createProgressBar() {
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-50 h-1 w-full bg-background";
+
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-accent";
+    progressBar.id = "myBar";
+
+    progressContainer.appendChild(progressBar);
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  function updateScrollProgress() {
+    document.body.addEventListener("scroll", () => {
+      const winScroll = document.body.scrollTop;
+      const height = document.body.scrollHeight - document.body.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (document) {
+        const myBar = document.getElementById("myBar");
+        if (myBar) {
+          myBar.style.width = scrolled + "%";
+        }
+      }
+    });
+  }
+  updateScrollProgress();
+
+  function addHeadingLinks() {
+    const headings = Array.from(
+      document.querySelectorAll("#article :is(h2, h3, h4, h5, h6)")
+    );
+    for (const heading of headings) {
+      heading.classList.add("group");
+      const link = document.createElement("a");
+      link.className =
+        "heading-link ms-2 no-underline opacity-75 md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100";
+      link.href = "#" + heading.id;
+
+      const span = document.createElement("span");
+      span.ariaHidden = "true";
+      span.innerText = "#";
+      link.appendChild(span);
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  function attachCopyButtons() {
+    const copyButtonLabel = "Copy";
+    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (const codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const computedStyle = getComputedStyle(codeBlock);
+      const hasFileNameOffset =
+        computedStyle.getPropertyValue("--file-name-offset").trim() !== "";
+
+      const topClass = hasFileNameOffset
+        ? "top-(--file-name-offset)"
+        : "-top-3";
+
+      const copyButton = document.createElement("button");
+      copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium`;
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      const code = block.querySelector("code");
+      const text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /** Accessible image lightbox for article images. */
+  function initLightbox() {
+    const article = document.getElementById("article");
+    if (!article) return;
+
+    const prefersReducedMotion = () =>
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let overlay = null;
+    let lastFocused = null;
+    let removeDragListeners = null;
+
+    // Defer attribute mutations so they don't push the LCP timestamp.
+    // Event listeners below use delegation and don't need the attributes to exist yet.
+    requestAnimationFrame(() => {
+      const images = Array.from(article.querySelectorAll("img"));
+      for (const image of images) {
+        if (image.closest("a")) continue;
+        image.setAttribute("role", "button");
+        image.setAttribute("tabindex", "0");
+        image.setAttribute("aria-haspopup", "dialog");
+        image.setAttribute(
+          "aria-label",
+          image.alt ? `Zoom image: ${image.alt}` : "Zoom image"
+        );
+      }
+    });
+
+    function open(src, alt, trigger) {
+      if (overlay) return;
+      lastFocused = trigger ?? document.activeElement;
+
+      overlay = document.createElement("div");
+      overlay.setAttribute("role", "dialog");
+      overlay.setAttribute("aria-modal", "true");
+      overlay.setAttribute(
+        "aria-label",
+        alt ? `Image preview: ${alt}` : "Image preview"
+      );
+      overlay.className =
+        "fixed inset-0 z-50 flex cursor-zoom-out items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 transition-opacity duration-200 motion-reduce:transition-none";
+
+      const closeButton = document.createElement("button");
+      closeButton.type = "button";
+      closeButton.setAttribute("aria-label", "Close image preview");
+      closeButton.className =
+        "absolute end-4 top-4 z-1 flex size-11 items-center justify-center rounded bg-black/50 text-3xl leading-none text-white";
+      closeButton.innerHTML = "&#10005;";
+      closeButton.addEventListener("click", close);
+
+      const image = document.createElement("img");
+      image.src = src;
+      image.alt = "";
+      image.className =
+        "max-h-[90dvh] max-w-[90dvw] cursor-default object-contain transition-transform duration-100 ease-out motion-reduce:transition-none data-[zoom=drag]:cursor-grabbing data-[zoom=drag]:transition-none data-[zoom=in]:cursor-grab";
+
+      overlay.append(closeButton, image);
+      overlay.addEventListener("click", e => {
+        if (e.target === overlay && currentScale <= 1) close();
+      });
+
+      let currentScale = 1;
+      let translateX = 0;
+      let translateY = 0;
+      let initialDist = 0;
+      let initialScale = 1;
+      let panStartX = 0;
+      let panStartY = 0;
+      let panStartTranslateX = 0;
+      let panStartTranslateY = 0;
+      let lastTapTime = 0;
+
+      function applyTransform() {
+        image.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+        // A backdrop click only closes at fit size, so drop the zoom-out cursor while zoomed.
+        overlay?.classList.toggle("cursor-zoom-out", currentScale <= 1);
+      }
+
+      function resetTransform() {
+        currentScale = 1;
+        translateX = 0;
+        translateY = 0;
+        image.style.transform = "";
+        image.removeAttribute("data-zoom");
+        overlay?.classList.add("cursor-zoom-out");
+      }
+
+      // Keep the zoomed image from being panned past its edges.
+      function clampTranslate() {
+        if (!overlay) return;
+        const maxX = Math.max(
+          0,
+          (image.clientWidth - overlay.clientWidth / currentScale) / 2
+        );
+        const maxY = Math.max(
+          0,
+          (image.clientHeight - overlay.clientHeight / currentScale) / 2
+        );
+        translateX = Math.min(maxX, Math.max(-maxX, translateX));
+        translateY = Math.min(maxY, Math.max(-maxY, translateY));
+      }
+
+      overlay.addEventListener(
+        "touchstart",
+        e => {
+          const t = e.touches;
+          if (t.length === 2) {
+            image.setAttribute("data-zoom", "drag");
+            initialDist = Math.hypot(
+              t[1].clientX - t[0].clientX,
+              t[1].clientY - t[0].clientY
+            );
+            initialScale = currentScale;
+          } else if (t.length === 1) {
+            const now = Date.now();
+            if (now - lastTapTime < 300) {
+              e.preventDefault();
+              if (currentScale > 1) {
+                resetTransform();
+              } else {
+                currentScale = 2;
+                translateX = 0;
+                translateY = 0;
+                applyTransform();
+                image.setAttribute("data-zoom", "in");
+              }
+              lastTapTime = 0;
+              panStartX = t[0].clientX;
+              panStartY = t[0].clientY;
+              panStartTranslateX = translateX;
+              panStartTranslateY = translateY;
+            } else {
+              lastTapTime = now;
+              if (currentScale > 1) {
+                image.setAttribute("data-zoom", "drag");
+                panStartX = t[0].clientX;
+                panStartY = t[0].clientY;
+                panStartTranslateX = translateX;
+                panStartTranslateY = translateY;
+              }
+            }
+          }
+        },
+        { passive: false }
+      );
+
+      overlay.addEventListener(
+        "touchmove",
+        e => {
+          const t = e.touches;
+          if (t.length === 2) {
+            e.preventDefault();
+            const dist = Math.hypot(
+              t[1].clientX - t[0].clientX,
+              t[1].clientY - t[0].clientY
+            );
+            const oldScale = currentScale;
+            currentScale = Math.min(
+              4,
+              Math.max(1, initialScale * (dist / initialDist))
+            );
+
+            // Zoom to the geometric center of the two fingers
+            const midX = (t[0].clientX + t[1].clientX) / 2;
+            const midY = (t[0].clientY + t[1].clientY) / 2;
+            const ox = overlay.clientWidth / 2;
+            const oy = overlay.clientHeight / 2;
+            translateX =
+              (midX - ox) * (1 / currentScale - 1 / oldScale) + translateX;
+            translateY =
+              (midY - oy) * (1 / currentScale - 1 / oldScale) + translateY;
+            clampTranslate();
+            applyTransform();
+          } else if (t.length === 1) {
+            if (currentScale > 1) {
+              e.preventDefault();
+              image.setAttribute("data-zoom", "drag");
+              translateX =
+                panStartTranslateX + (t[0].clientX - panStartX) / currentScale;
+              translateY =
+                panStartTranslateY + (t[0].clientY - panStartY) / currentScale;
+              clampTranslate();
+              applyTransform();
+            } else {
+              e.preventDefault();
+            }
+          }
+        },
+        { passive: false }
+      );
+
+      overlay.addEventListener("touchend", e => {
+        if (e.touches.length === 0) {
+          if (currentScale > 1) {
+            image.setAttribute("data-zoom", "in");
+          } else {
+            image.removeAttribute("data-zoom");
+          }
+          if (currentScale <= 1.05) resetTransform();
+        }
+      });
+
+      overlay.addEventListener("touchcancel", e => {
+        if (e.touches.length === 0) {
+          if (currentScale > 1) {
+            image.setAttribute("data-zoom", "in");
+          } else {
+            image.removeAttribute("data-zoom");
+          }
+          if (currentScale <= 1.05) resetTransform();
+        }
+      });
+
+      overlay.addEventListener(
+        "wheel",
+        e => {
+          e.preventDefault();
+          const oldScale = currentScale;
+          const delta = -e.deltaY * 0.001;
+          currentScale = Math.min(4, Math.max(1, currentScale * (1 + delta)));
+
+          if (currentScale <= 1.05) {
+            resetTransform();
+          } else {
+            image.setAttribute("data-zoom", "in");
+            // Zoom to cursor: adjust translate so the point under cursor stays fixed
+            const ox = overlay.clientWidth / 2;
+            const oy = overlay.clientHeight / 2;
+            translateX =
+              (e.clientX - ox) * (1 / currentScale - 1 / oldScale) + translateX;
+            translateY =
+              (e.clientY - oy) * (1 / currentScale - 1 / oldScale) + translateY;
+            clampTranslate();
+            applyTransform();
+          }
+        },
+        { passive: false }
+      );
+
+      let isMouseDown = false;
+      let mouseStartX = 0;
+      let mouseStartY = 0;
+
+      overlay.addEventListener("mousedown", e => {
+        if (e.button !== 0 || currentScale <= 1) return;
+        if (e.target.closest("button")) return;
+        isMouseDown = true;
+        mouseStartX = e.clientX;
+        mouseStartY = e.clientY;
+        panStartTranslateX = translateX;
+        panStartTranslateY = translateY;
+        image.setAttribute("data-zoom", "drag");
+        e.preventDefault();
+      });
+
+      function onMouseMove(e) {
+        if (!isMouseDown || !overlay) return;
+        translateX =
+          panStartTranslateX + (e.clientX - mouseStartX) / currentScale;
+        translateY =
+          panStartTranslateY + (e.clientY - mouseStartY) / currentScale;
+        clampTranslate();
+        applyTransform();
+      }
+
+      function onMouseUp() {
+        if (!isMouseDown) return;
+        isMouseDown = false;
+        if (currentScale > 1) {
+          image.setAttribute("data-zoom", "in");
+        } else {
+          image.removeAttribute("data-zoom");
+        }
+      }
+
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+      removeDragListeners = () => {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+      };
+
+      document.body.appendChild(overlay);
+      document.body.style.overflow = "hidden";
+      document.addEventListener("keydown", onKeyDown);
+      window.__closeLightbox = close;
+
+      requestAnimationFrame(() => overlay?.classList.add("opacity-100"));
+      closeButton.focus();
+    }
+
+    function close() {
+      if (!overlay) return;
+      const el = overlay;
+      overlay = null;
+      el.classList.add("pointer-events-none");
+      window.__closeLightbox = null;
+
+      document.removeEventListener("keydown", onKeyDown);
+      removeDragListeners?.();
+      removeDragListeners = null;
+      document.body.style.overflow = "";
+      lastFocused?.focus();
+      lastFocused = null;
+
+      if (prefersReducedMotion()) {
+        el.remove();
+        return;
+      }
+      const remove = () => el.remove();
+      el.addEventListener("transitionend", remove, { once: true });
+      setTimeout(remove, 250); // fallback in case transitionend never fires
+      el.classList.remove("opacity-100");
+    }
+
+    function onKeyDown(e) {
+      if (e.key === "Escape") {
+        close();
+      } else if (e.key === "Tab") {
+        trapFocus(e);
+      }
+    }
+
+    // Keep keyboard focus inside the open dialog.
+    function trapFocus(e) {
+      if (!overlay) return;
+      const focusables = overlay.querySelectorAll(
+        'a[href], button, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    function triggerFromEvent(e) {
+      const image = e.target.closest("img");
+      if (!image || !article.contains(image) || image.closest("a")) return null;
+      return image;
+    }
+
+    function activate(image) {
+      open(image.currentSrc || image.src, image.alt, image);
+    }
+
+    article.addEventListener("click", e => {
+      const image = triggerFromEvent(e);
+      if (!image) return;
+      e.preventDefault();
+      activate(image);
+    });
+
+    article.addEventListener("keydown", e => {
+      if (e.key !== "Enter" && e.key !== " " && e.key !== "Spacebar") return;
+      const image = triggerFromEvent(e);
+      if (!image) return;
+      e.preventDefault();
+      activate(image);
+    });
+  }
+  initLightbox();
+
+  if (!window.__lightboxSwapBound) {
+    window.__lightboxSwapBound = true;
+    document.addEventListener("astro:before-swap", () =>
+      window.__closeLightbox?.()
+    );
+  }
+</script>
